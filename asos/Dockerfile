@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17
 
-WORKDIR /tmp
+WORKDIR /data
 
 COPY build/libs/*.jar /asos/backend.jar
 

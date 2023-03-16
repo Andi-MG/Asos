@@ -1,4 +1,4 @@
-name: Asos App
+name: Asos backend App
 
 on:
   push:
@@ -20,9 +20,9 @@ jobs:
           java-version: '17'
 
       - name: Gradle test
-        run: cd asos && ./gradlew test
+        run: cd asos-backend && ./gradlew test
 
-  publish-to-docker:
+  publish-backend-to-docker:
     runs-on: ubuntu-latest
     needs: test
 
@@ -37,7 +37,7 @@ jobs:
           java-version: '17'
 
       - name: Gradle Build
-        run: cd asos && ./gradlew build
+        run: cd asos-backend && ./gradlew build
 
       - name: Login
         uses: docker/login-action@v2
@@ -49,18 +49,18 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: andivx/asos-app
+          images: andivx/asos-backend-app
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./asos
+          context: ./asos-backend
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  deploy-to-okteto:
+  deploy-backend-to-okteto:
     runs-on: ubuntu-latest
-    needs: publish-to-docker
+    needs: publish-backend-to-docker
 
     steps:
       - name: checkout
@@ -76,6 +76,7 @@ jobs:
         with:
           namespace: release-andi-mg
 
-
       - name: "Deploy application"
         uses: okteto/apply@latest
+        with:
+          manifest: ./asos-backend/k8s.yml

@@ -14,13 +14,21 @@ configurations {
 	}
 }
 
+jar {
+	enabled = false // Disabling the creation of the plain jar file, not the bootable jar
+	manifest {
+		attributes 'Main-Class': 'es.andim.asos.AsosApplication'
+	}
+}
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator:3.0.4'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

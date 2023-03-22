@@ -20,4 +20,4 @@ jobs:
           node-version: 18.15.0
 
       - name:
-        run: cd asos-frontend && yarn && yarn test
+        run: cd asos-frontend && yarn && yarn test:ci

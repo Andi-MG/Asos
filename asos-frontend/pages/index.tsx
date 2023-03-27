@@ -1,13 +1,13 @@
 import Head from 'next/head'
-import Image from 'next/image'
 
 import styles from '@/pages/index.module.css'
 
 export default function Home() {
+  let apiUrl: string = process.env.NEXT_PUBLIC_API_URL || '';
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>Association Management</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -20,7 +20,7 @@ export default function Home() {
           Work in progress
         </p>
       </main>
-
+      <div> { apiUrl }</div>
       <footer className={styles.footer}>
         Andi Martín
       </footer>

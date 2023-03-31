@@ -36,7 +36,7 @@ class MembersControllerTest {
 
     @Test
     void shouldReturnEmptyList_whenThereAreNoMembers() throws Exception{
-        MvcResult result = mockMvc.perform(get("/members/")).andExpect(status().isOk())
+        MvcResult result = mockMvc.perform(get("/members")).andExpect(status().isOk())
                         .andReturn();
         List<SimpleMember> actualMemberList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<SimpleMember>>(){});
         
@@ -49,7 +49,7 @@ class MembersControllerTest {
         
         when(membersUseCase.getSimpleMembers()).thenReturn(givenMemberList);
 
-        MvcResult result = mockMvc.perform(get("/members/")).andExpect(status().isOk())
+        MvcResult result = mockMvc.perform(get("/members")).andExpect(status().isOk())
         .andReturn();
         List<SimpleMember> actualMemberList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<SimpleMember>>(){});
 

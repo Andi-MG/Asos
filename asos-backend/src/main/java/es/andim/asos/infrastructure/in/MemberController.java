@@ -19,7 +19,7 @@ public class MemberController {
     @Autowired
     private MembersUseCase membersUseCase;
 
-    @GetMapping(value = "/", produces = "application/json")
+    @GetMapping(produces = "application/json")
     public List<SimpleMember> getAllMembers() {
         return membersUseCase.getSimpleMembers();
     }

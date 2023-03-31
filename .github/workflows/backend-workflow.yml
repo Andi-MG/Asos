@@ -61,9 +61,27 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  deploy-backend-to-okteto:
+  update-secrets-in-okteto:
     runs-on: ubuntu-latest
     needs: publish-backend-to-docker
+
+    steps:
+      - uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: create db secrets
+        uses: Azure/k8s-create-secret@v4
+        with:
+          namespace: andi-mg
+          secret-type: 'generic'
+          secret-name: datasource-credentials
+          data: ${{ secrets.API_SECRET_DATA }}
+
+  update-deploy-backend-in-okteto:
+    runs-on: ubuntu-latest
+    needs: update-secrets-in-okteto
 
     steps:
       - name: checkout
@@ -77,7 +95,7 @@ jobs:
       - name: okteto namespace
         uses: okteto/namespace@latest
         with:
-          namespace: release-andi-mg
+          namespace: andi-mg
 
       - name: "Deploy application"
         uses: okteto/apply@latest

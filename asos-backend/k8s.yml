@@ -16,7 +16,22 @@ spec:
       - image: andivx/asos-backend-app:main
         name: asos-backend-app
         imagePullPolicy: "Always"
-
+        env:
+        - name: SPRING_APPLICATION_JSON
+          valueFrom:
+            configMapKeyRef:
+              name: spring-config
+              key: config.json
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: datasource-credentials
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: datasource-credentials
+              key: password
 ---
 
 apiVersion: v1

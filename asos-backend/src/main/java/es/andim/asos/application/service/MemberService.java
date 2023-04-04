@@ -33,8 +33,15 @@ public class MemberService implements MembersUseCase{
     }
 
     @Override
-    public Member addNewMember(NewMember alreadyExistingNewMember) throws MemberAlreadyExistsException {
-        throw new UnsupportedOperationException("Unimplemented method 'addNewMember'");
+    public Member addNewMember(NewMember newMember) throws MemberAlreadyExistsException {
+        Member member = mapNewMemberToMember(newMember);
+        return association.addNewMember(member);
     }
-    
+
+    private Member mapNewMemberToMember(NewMember newMember) {
+        return Member.builder()
+                .dni(newMember.getDni())
+                .alias(newMember.getAlias())
+                .build();
+    }
 }

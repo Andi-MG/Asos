@@ -18,4 +18,7 @@ public class Association {
         return memberRepository.findAll();
     }
 
+    public Member addNewMember(Member member) throws MemberAlreadyExistsException {
+        return memberRepository.addMember(member);
+    }
 }

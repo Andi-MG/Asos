@@ -6,4 +6,5 @@ public interface MemberRepository {
 
     List<Member> findAll();
 
+    Member addMember(Member newMember) throws MemberAlreadyExistsException;
 }

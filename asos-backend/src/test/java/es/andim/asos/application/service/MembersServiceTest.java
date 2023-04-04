@@ -1,7 +1,10 @@
 package es.andim.asos.application.service;
 
 import java.util.List;
+import java.util.UUID;
 
+import es.andim.asos.application.NewMember;
+import es.andim.asos.domain.MemberAlreadyExistsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +28,7 @@ class MembersServiceTest {
     private MemberService membersService;
 
     @Test
-    void shouldReturnEmptyList_whenThereAreNoMembers(){
+    void getAllMembers_shouldReturnEmptyList_whenThereAreNoMembers(){
         when(association.getAllMembers()).thenReturn(List.of());
 
         List<SimpleMember> actualMembers = membersService.getSimpleMembers();
@@ -34,11 +37,28 @@ class MembersServiceTest {
     }
 
     @Test
-    void shouldReturnSimpleMembers_whenThereAreMembers(){
+    void getAllMembers_shouldReturnSimpleMembers_whenThereAreMembers(){
         when(association.getAllMembers()).thenReturn(List.of(Member.builder().alias("Borja").build()));
 
         List<SimpleMember> actualMembers = membersService.getSimpleMembers();
 
         assertThat(actualMembers).containsExactly(SimpleMember.builder().alias("Borja").build());
+    }
+
+    @Test
+    void addNewMember_shouldReturnNewMember_whenAddedCorrectly() throws MemberAlreadyExistsException {
+        NewMember givenNewMember = NewMember.builder().alias("Borja").dni("dni").build();
+        Member member = Member.builder().alias("Borja").dni("dni").build();
+
+        UUID givenUUID = UUID.fromString("647e9d17-3ddf-4f6e-ac0c-1a9cfe1bf00d");
+        when(association.addNewMember(member)).thenReturn(Member.builder()
+                .alias("Borja")
+                .dni("dni")
+                .id(givenUUID)
+                .build());
+
+        Member savedMember = membersService.addNewMember(givenNewMember);
+
+        assertThat(savedMember.getId()).isEqualTo(givenUUID);
     }
 }

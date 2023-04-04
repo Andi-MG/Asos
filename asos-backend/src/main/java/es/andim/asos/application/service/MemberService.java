@@ -3,9 +3,11 @@ package es.andim.asos.application.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import es.andim.asos.domain.MemberAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.andim.asos.application.NewMember;
 import es.andim.asos.application.SimpleMember;
 import es.andim.asos.application.in.MembersUseCase;
 import es.andim.asos.domain.Association;
@@ -28,6 +30,11 @@ public class MemberService implements MembersUseCase{
                             .build())
             .collect(Collectors.toList());
         return simpleMemberList;
+    }
+
+    @Override
+    public Member addNewMember(NewMember alreadyExistingNewMember) throws MemberAlreadyExistsException {
+        throw new UnsupportedOperationException("Unimplemented method 'addNewMember'");
     }
     
 }

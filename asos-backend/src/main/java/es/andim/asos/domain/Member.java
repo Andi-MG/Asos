@@ -1,5 +1,7 @@
 package es.andim.asos.domain;
 
+import java.util.Map;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -7,6 +9,6 @@ import lombok.Getter;
 @Builder
 public class Member {
 
+    private long id;
     private String alias;
-
 }

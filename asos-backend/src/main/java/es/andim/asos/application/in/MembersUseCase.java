@@ -4,13 +4,13 @@ import java.util.List;
 
 import es.andim.asos.application.NewMember;
 import es.andim.asos.application.SimpleMember;
-import es.andim.asos.domain.Member;
+import es.andim.asos.domain.model.Member;
 import es.andim.asos.domain.MemberAlreadyExistsException;
 
 public interface MembersUseCase {
 
-    List<SimpleMember> getSimpleMembers();
+    List<SimpleMember> getActiveMembersSummary();
 
-    Member addNewMember(NewMember alreadyExistingNewMember) throws MemberAlreadyExistsException;
+    Member addNewMember(NewMember newMember) throws MemberAlreadyExistsException;
 
 }

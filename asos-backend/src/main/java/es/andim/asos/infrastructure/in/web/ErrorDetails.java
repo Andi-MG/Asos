@@ -1,4 +1,4 @@
-package es.andim.asos.infrastructure.in;
+package es.andim.asos.infrastructure.in.web;
 
 import java.util.List;
 

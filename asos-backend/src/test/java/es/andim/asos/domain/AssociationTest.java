@@ -1,8 +1,10 @@
 package es.andim.asos.domain;
 
 import java.util.List;
-import java.util.UUID;
 
+import es.andim.asos.domain.model.Association;
+import es.andim.asos.domain.model.Member;
+import es.andim.asos.domain.ports.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,18 +24,18 @@ class AssociationTest {
 
     @Test
     void getAllMembers_shouldReturnEmptyList_whenThereAreNoMembersInTheAssociation(){
-        when(memberRepository.findAll()).thenReturn(List.of());
+        when(memberRepository.findAllActiveMembers()).thenReturn(List.of());
 
-        List<Member> actualMemberList = association.getAllMembers();
+        List<Member> actualMemberList = association.getAllActiveMembers();
 
         assertThat(actualMemberList).isEmpty();
     }
 
     @Test
     void getAllMembers_shouldReturnMembers_whenThereAreMembersInTheAssociation(){
-        when(memberRepository.findAll()).thenReturn(List.of(Member.builder().alias("Borja").build()));
+        when(memberRepository.findAllActiveMembers()).thenReturn(List.of(Member.builder().alias("Borja").build()));
 
-        List<Member> actualMemberList = association.getAllMembers();
+        List<Member> actualMemberList = association.getAllActiveMembers();
 
         assertThat(actualMemberList).isNotEmpty();
     }
@@ -41,13 +43,13 @@ class AssociationTest {
     @Test
     void addNewMember_shouldReturnMember_whenAddedCorrectlyToTheAssociation() throws MemberAlreadyExistsException {
         Member givenNewMember = Member.builder().dni("dni").alias("Borja").build();
-        UUID givenUUID = UUID.fromString("647e9d17-3ddf-4f6e-ac0c-1a9cfe1bf00d");
-        Member addedMember = Member.builder().dni("dni").id(givenUUID).alias("Borja").build();
+        String givenId = "647e9d17-3ddf-4f6e-ac0c-1a9cfe1bf00d";
+        Member addedMember = Member.builder().dni("dni").id(givenId).alias("Borja").build();
 
         when(memberRepository.addMember(givenNewMember)).thenReturn(addedMember);
 
         Member savedMember = association.addNewMember(givenNewMember);
 
-        assertThat(savedMember.getId()).isEqualTo(givenUUID);
+        assertThat(savedMember.getId()).isEqualTo(givenId);
     }
 }

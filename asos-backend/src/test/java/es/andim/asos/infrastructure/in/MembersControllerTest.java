@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
-import java.util.UUID;
 
 import es.andim.asos.domain.MemberAlreadyExistsException;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.andim.asos.application.NewMember;
 import es.andim.asos.application.SimpleMember;
 import es.andim.asos.application.in.MembersUseCase;
-import es.andim.asos.domain.Member;
+import es.andim.asos.domain.model.Member;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -56,7 +55,7 @@ class MembersControllerTest {
     void shouldReturnMembersWithAlias_whenThereAreMembers() throws Exception{
         List<SimpleMember> givenMemberList = List.of(SimpleMember.builder().alias("Borja").build());
         
-        when(membersUseCase.getSimpleMembers()).thenReturn(givenMemberList);
+        when(membersUseCase.getActiveMembersSummary()).thenReturn(givenMemberList);
 
         MvcResult result = mockMvc.perform(get("/members")).andExpect(status().isOk())
         .andReturn();
@@ -68,14 +67,14 @@ class MembersControllerTest {
     @Test
     void shouldReturnLocationURI_whenMemberIsCreated() throws Exception{
         NewMember newMember = NewMember.builder().alias("Borja").dni("dni").build();
-        UUID givenUUID = UUID.fromString("647e9d17-3ddf-4f6e-ac0c-1a9cfe1bf00d");
-        Member addedMember = Member.builder().id(givenUUID).alias("Borja").build();
+        String givenId = "647e9d17-3ddf-4f6e-ac0c-1a9cfe1bf00d";
+        Member addedMember = Member.builder().id(givenId).alias("Borja").build();
 
         when(membersUseCase.addNewMember(any(NewMember.class))).thenReturn(addedMember);
 
         mockMvc.perform(post("/members").content(objectMapper.writeValueAsString(newMember)).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
-            .andExpect(header().string("Location", "http://localhost/members/"+givenUUID)); //TODO: Add ssl to use https and break this test
+            .andExpect(header().string("Location", "http://localhost/members/"+givenId));
     }
 
     @Test

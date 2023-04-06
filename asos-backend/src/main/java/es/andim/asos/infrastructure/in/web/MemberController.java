@@ -1,4 +1,4 @@
-package es.andim.asos.infrastructure.in;
+package es.andim.asos.infrastructure.in.web;
 
 import java.net.URI;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import es.andim.asos.application.NewMember;
 import es.andim.asos.application.SimpleMember;
 import es.andim.asos.application.in.MembersUseCase;
-import es.andim.asos.domain.Member;
+import es.andim.asos.domain.model.Member;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -35,7 +35,7 @@ public class MemberController {
 
     @GetMapping(produces = "application/json")
     public List<SimpleMember> getAllMembers() {
-        return membersUseCase.getSimpleMembers();
+        return membersUseCase.getActiveMembersSummary();
     }
 
     
@@ -43,7 +43,7 @@ public class MemberController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> addMember(@RequestBody @Valid NewMember newMember) throws MemberAlreadyExistsException {
         Member addedMember = membersUseCase.addNewMember(newMember);
-        URI location= ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(addedMember.getId()).toUri();  
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(addedMember.getId()).toUri();
         return ResponseEntity.created(location).build();
     }  
 }

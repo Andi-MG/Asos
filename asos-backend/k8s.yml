@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: asos-backend-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: asos-backend-app
@@ -32,6 +32,11 @@ spec:
             secretKeyRef:
               name: datasource-credentials
               key: password
+        - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: datasource-credentials
+              key: url
 ---
 
 apiVersion: v1
@@ -47,3 +52,15 @@ spec:
     port: 8080
   selector:
     app: asos-backend-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  type:
+    NodePort
+  ports:
+    - port: 5432
+  selector:
+    app: postgres

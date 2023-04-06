@@ -10,26 +10,25 @@ import org.springframework.stereotype.Service;
 import es.andim.asos.application.NewMember;
 import es.andim.asos.application.SimpleMember;
 import es.andim.asos.application.in.MembersUseCase;
-import es.andim.asos.domain.Association;
-import es.andim.asos.domain.Member;
+import es.andim.asos.domain.model.Association;
+import es.andim.asos.domain.model.Member;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService implements MembersUseCase{
+public class MemberService implements MembersUseCase {
 
     @Autowired
     private final Association association;
     
     @Override
-    public List<SimpleMember> getSimpleMembers() {
-        List<Member> memberList = association.getAllMembers();
-        List<SimpleMember> simpleMemberList = memberList.stream()
+    public List<SimpleMember> getActiveMembersSummary() {
+        List<Member> memberList = association.getAllActiveMembers();
+        return memberList.stream()
             .map(member -> SimpleMember.builder()
                             .alias(member.getAlias())
                             .build())
             .collect(Collectors.toList());
-        return simpleMemberList;
     }
 
     @Override

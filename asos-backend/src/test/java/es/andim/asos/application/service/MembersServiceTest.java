@@ -1,7 +1,6 @@
 package es.andim.asos.application.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import es.andim.asos.application.NewMember;
 import es.andim.asos.domain.MemberAlreadyExistsException;
@@ -12,8 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import es.andim.asos.application.SimpleMember;
-import es.andim.asos.domain.Association;
-import es.andim.asos.domain.Member;
+import es.andim.asos.domain.model.Association;
+import es.andim.asos.domain.model.Member;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -29,18 +28,18 @@ class MembersServiceTest {
 
     @Test
     void getAllMembers_shouldReturnEmptyList_whenThereAreNoMembers(){
-        when(association.getAllMembers()).thenReturn(List.of());
+        when(association.getAllActiveMembers()).thenReturn(List.of());
 
-        List<SimpleMember> actualMembers = membersService.getSimpleMembers();
+        List<SimpleMember> actualMembers = membersService.getActiveMembersSummary();
 
         assertThat(actualMembers).isEmpty();
     }
 
     @Test
     void getAllMembers_shouldReturnSimpleMembers_whenThereAreMembers(){
-        when(association.getAllMembers()).thenReturn(List.of(Member.builder().alias("Borja").build()));
+        when(association.getAllActiveMembers()).thenReturn(List.of(Member.builder().alias("Borja").build()));
 
-        List<SimpleMember> actualMembers = membersService.getSimpleMembers();
+        List<SimpleMember> actualMembers = membersService.getActiveMembersSummary();
 
         assertThat(actualMembers).containsExactly(SimpleMember.builder().alias("Borja").build());
     }
@@ -50,15 +49,16 @@ class MembersServiceTest {
         NewMember givenNewMember = NewMember.builder().alias("Borja").dni("dni").build();
         Member member = Member.builder().alias("Borja").dni("dni").build();
 
-        UUID givenUUID = UUID.fromString("647e9d17-3ddf-4f6e-ac0c-1a9cfe1bf00d");
-        when(association.addNewMember(member)).thenReturn(Member.builder()
+        String givenId = "647e9d17-3ddf-4f6e-ac0c-1a9cfe1bf00d";
+        Member givenMember = Member.builder()
                 .alias("Borja")
                 .dni("dni")
-                .id(givenUUID)
-                .build());
+                .id(givenId)
+                .build();
+        when(association.addNewMember(member)).thenReturn(givenMember);
 
         Member savedMember = membersService.addNewMember(givenNewMember);
 
-        assertThat(savedMember.getId()).isEqualTo(givenUUID);
+        assertThat(savedMember.getId()).isEqualTo(givenId);
     }
 }

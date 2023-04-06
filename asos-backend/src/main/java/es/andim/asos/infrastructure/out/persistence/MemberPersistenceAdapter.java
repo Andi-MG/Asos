@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import es.andim.asos.domain.MemberAlreadyExistsException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class MemberPersistenceAdapter implements MemberRepository {
     }
 
     @Override
+    @Transactional
     public Member addMember(Member newMember) throws MemberAlreadyExistsException {
-
         boolean isAlreadyMember = memberRepository.findAll().stream()
                 .anyMatch(member -> StringUtils.equals(newMember.getDni(), member.getDni()));
         if(isAlreadyMember) {

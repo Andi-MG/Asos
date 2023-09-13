@@ -73,7 +73,7 @@ jobs:
       - name: okteto namespace
         uses: okteto/namespace@latest
         with:
-          namespace: release-andi-mg
+          namespace: andi-mg
 
       - name: "Deploy application"
         uses: okteto/apply@latest

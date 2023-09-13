@@ -3,7 +3,7 @@ import Head from 'next/head'
 import styles from '@/pages/index.module.css'
 
 export default function Home() {
-  let apiUrl: string = process.env.NEXT_PUBLIC_API_URL || '';
+  const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || '';
   return (
     <div className={styles.container}>
       <Head>

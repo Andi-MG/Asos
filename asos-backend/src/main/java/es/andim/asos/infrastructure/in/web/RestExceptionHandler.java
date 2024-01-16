@@ -3,7 +3,7 @@ package es.andim.asos.infrastructure.in.web;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import es.andim.asos.domain.MemberAlreadyExistsException;
+import es.andim.asos.application.MemberAlreadyExistsException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

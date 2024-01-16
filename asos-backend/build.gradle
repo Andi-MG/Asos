@@ -39,6 +39,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.assertj:assertj-core:3.24.2'
 	testImplementation 'com.h2database:h2:2.1.214'
+	testImplementation 'com.tngtech.archunit:archunit-junit5:1.1.0'
 }
 
 tasks.named('test') {

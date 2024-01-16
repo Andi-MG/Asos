@@ -3,34 +3,34 @@ package es.andim.asos.application.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import es.andim.asos.domain.MemberAlreadyExistsException;
+import es.andim.asos.application.MemberAlreadyExistsException;
 
 import es.andim.asos.application.NewMember;
 import es.andim.asos.application.SimpleMember;
 import es.andim.asos.application.in.MembersUseCase;
-import es.andim.asos.domain.model.Association;
+import es.andim.asos.application.out.MemberRepository;
 import es.andim.asos.domain.model.Member;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class MemberService implements MembersUseCase {
 
-    private final Association association;
+    private final MemberRepository repository;
     
     @Override
     public List<SimpleMember> getActiveMembersSummary() {
-        List<Member> memberList = association.getAllActiveMembers();
+        List<Member> memberList = repository.findAllActiveMembers();
         return memberList.stream()
             .map(member -> SimpleMember.builder()
                             .alias(member.getAlias())
                             .build())
-            .collect(Collectors.toList());
+            .toList();
     }
 
     @Override
     public Member addNewMember(NewMember newMember) throws MemberAlreadyExistsException {
         Member member = mapNewMemberToMember(newMember);
-        return association.addNewMember(member);
+        return repository.addMember(member);
     }
 
     private Member mapNewMemberToMember(NewMember newMember) {

@@ -1,26 +1,22 @@
 package es.andim.asos.infrastructure.out.persistence;
 
+import es.andim.asos.application.MemberAlreadyExistsException;
+import es.andim.asos.application.out.MemberRepository;
+import es.andim.asos.domain.model.Member;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.UUID;
 
-import es.andim.asos.domain.MemberAlreadyExistsException;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import es.andim.asos.domain.model.Member;
-import es.andim.asos.domain.ports.MemberRepository;
-
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MemberPersistenceAdapter implements MemberRepository {
 
-    @Autowired
-    private MemberMapper memberMapper;
-    @Autowired
-    private SpringDataMemberRepository memberRepository;
+    private final MemberMapper memberMapper;
+    private final SpringDataMemberRepository memberRepository;
 
     @Override
     public List<Member> findAllActiveMembers() {

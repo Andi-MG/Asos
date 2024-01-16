@@ -1,4 +1,4 @@
-package es.andim.asos.domain;
+package es.andim.asos.application;
 
 public class MemberAlreadyExistsException extends Exception {
 

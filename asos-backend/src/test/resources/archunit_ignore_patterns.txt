@@ -1,0 +1,3 @@
+# We don't really care about calling equals or hashcode in our domain...
+#.*model\.Member\.equals.*
+#.*model\.Member\.hashCode.*

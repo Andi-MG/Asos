@@ -3,7 +3,8 @@ package es.andim.asos.application.service;
 import java.util.List;
 
 import es.andim.asos.application.NewMember;
-import es.andim.asos.domain.MemberAlreadyExistsException;
+import es.andim.asos.application.MemberAlreadyExistsException;
+import es.andim.asos.application.out.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import es.andim.asos.application.SimpleMember;
-import es.andim.asos.domain.model.Association;
 import es.andim.asos.domain.model.Member;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,14 +21,14 @@ import static org.mockito.Mockito.when;
 class MembersServiceTest {
 
     @Mock
-    private Association association;
+    private MemberRepository repository;
 
     @InjectMocks
     private MemberService membersService;
 
     @Test
     void getAllMembers_shouldReturnEmptyList_whenThereAreNoMembers(){
-        when(association.getAllActiveMembers()).thenReturn(List.of());
+        when(repository.findAllActiveMembers()).thenReturn(List.of());
 
         List<SimpleMember> actualMembers = membersService.getActiveMembersSummary();
 
@@ -37,7 +37,7 @@ class MembersServiceTest {
 
     @Test
     void getAllMembers_shouldReturnSimpleMembers_whenThereAreMembers(){
-        when(association.getAllActiveMembers()).thenReturn(List.of(Member.builder().alias("Borja").build()));
+        when(repository.findAllActiveMembers()).thenReturn(List.of(Member.builder().alias("Borja").build()));
 
         List<SimpleMember> actualMembers = membersService.getActiveMembersSummary();
 
@@ -55,7 +55,7 @@ class MembersServiceTest {
                 .dni("dni")
                 .id(givenId)
                 .build();
-        when(association.addNewMember(member)).thenReturn(givenMember);
+        when(repository.addMember(member)).thenReturn(givenMember);
 
         Member savedMember = membersService.addNewMember(givenNewMember);
 

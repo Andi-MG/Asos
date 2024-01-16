@@ -1,7 +1,7 @@
 package es.andim.asos.infrastructure.out.persistence;
 
 import es.andim.asos.domain.model.Member;
-import es.andim.asos.domain.MemberAlreadyExistsException;
+import es.andim.asos.application.MemberAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
